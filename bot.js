@@ -1,34 +1,55 @@
 const RtmClient  = require('@slack/client').RtmClient;
 const WebClient  = require('@slack/client').WebClient;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
-var fetch = require('node-fetch');
+const fetch      = require('node-fetch');
 
-const bot_token = 'xoxb-300355127216-hlFCMLD1IRTAVS3BiLGsnBgy';
+const bot_token = 'your-token-here';
 const rtm       = new RtmClient(bot_token);
 const web       = new WebClient(bot_token);
 
 const robotName   = 'Old Ben';
-const allCommands = ['!echo', '!help', '!dadjoke'];
+const allCommands = ['!help', '!echo', '!dadjoke'];
 
 let users = [];
 
 function fetchDadJoke(args, message) {
-  let headers = {
-    method: "GET",
-    accept: "application/json",
-    "User-Agent": "https://github.com/JGordy/slackbot"
+  let url,
+      messageToSend,
+      randomIndex,
+      headers = {
+        method: "GET",
+        accept: "application/json",
+        "User-Agent": "https://github.com/JGordy/slackbot"
+      };
+
+  if (args) {
+    url = `https://icanhazdadjoke.com/search?term=${args}`;
+  } else {
+    url = 'https://icanhazdadjoke.com/';
   }
-  fetch('https://icanhazdadjoke.com/', {headers: headers})
-  .then(results => {
-    return results.json()
-  })
-  .then(data => {
-    rtm.sendMessage('"' + data.joke + '"' , message.channel)
-  })
-  .catch(err => {
-    console.log("error: ", err);
-  })
-}
+
+  fetch(url, {headers: headers})
+    .then(results => {
+      return results.json()
+    })
+    .then(data => {
+      console.log(data);
+      if (data.joke) {
+        console.log("joke detected: ", data.joke);
+        messageToSend = '"' + data.joke + '"';
+      } else if (data.total_jokes !== 0) {
+        randomIndex = Math.floor(Math.random() * (data.results.length));
+        messageToSend = '"' + data.results[randomIndex].joke + '"';
+      } else {
+        messageToSend = "Nothing found for the term " +  '"' + args + '"';
+      }
+      rtm.sendMessage(messageToSend, message.channel)
+    })
+    .catch(err => {
+      rtm.sendMessage("Error fetching dad jokes: " + err , message.channel)
+    });
+
+};
 
 function executeCommand(command, args, message) {
     switch (command) {
@@ -37,8 +58,10 @@ function executeCommand(command, args, message) {
         break;
       case '!help':
         rtm.sendMessage("Here are the supported commands--->    " + allCommands.join(",  ") , message.channel);
+        break;
       case '!dadjoke':
         fetchDadJoke(args, message);
+        break;
       default:
 
     }
@@ -69,7 +92,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
 
                     if (message.text.indexOf(command) === 0) {
                         const args = message.text.substring(command.length);
-                        executeCommand(command, args, message);
+                        executeCommand(command, args.trim(), message);
                     }
                 });
             }
