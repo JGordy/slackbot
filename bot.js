@@ -2,6 +2,8 @@ const RtmClient  = require('@slack/client').RtmClient;
 const WebClient  = require('@slack/client').WebClient;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const fetch      = require('node-fetch');
+const express    = require('express');
+const app        = express();
 
 const bot_token = 'xoxb-300355127216-hlFCMLD1IRTAVS3BiLGsnBgy';
 const rtm       = new RtmClient(bot_token);
@@ -112,3 +114,8 @@ web.users.list((err, data) => {
 });
 
 rtm.start();
+
+const port = process.env.PORT || 8001;
+app.listen(port, () => {
+    console.log('listening on port: %s', port);
+});
