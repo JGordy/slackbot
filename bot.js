@@ -3,7 +3,7 @@ const WebClient  = require('@slack/client').WebClient;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const fetch      = require('node-fetch');
 
-const bot_token = 'your-token-here';
+const bot_token = 'xoxb-300355127216-hlFCMLD1IRTAVS3BiLGsnBgy';
 const rtm       = new RtmClient(bot_token);
 const web       = new WebClient(bot_token);
 
@@ -33,15 +33,19 @@ function fetchDadJoke(args, message) {
       return results.json()
     })
     .then(data => {
-      console.log(data);
       if (data.joke) {
-        console.log("joke detected: ", data.joke);
         messageToSend = '"' + data.joke + '"';
       } else if (data.total_jokes !== 0) {
         randomIndex = Math.floor(Math.random() * (data.results.length));
         messageToSend = '"' + data.results[randomIndex].joke + '"';
       } else {
-        messageToSend = "Nothing found for the term " +  '"' + args + '"';
+        let messages = [":wave: " + args + " is not the term you're looking for.",
+                        ":rebel_alliance: The jedi archives contain nothing on the term " +  '"' + args + '"',
+                        ":bluelightsaber: " + args +  " not found. You'll never win Darth.",
+                        ":wave: " + args + " is not the term you're looking for."];
+        let randomIndex = Math.floor(Math.random() * messages.length);
+
+        messageToSend = `${messages[randomIndex]}`
       }
       rtm.sendMessage(messageToSend, message.channel)
     })
@@ -63,7 +67,6 @@ function executeCommand(command, args, message) {
         fetchDadJoke(args, message);
         break;
       default:
-
     }
 }
 
