@@ -1,73 +1,73 @@
+require('dotenv').config();
 const RtmClient  = require('@slack/client').RtmClient;
 const WebClient  = require('@slack/client').WebClient;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const fetch      = require('node-fetch');
-const express    = require('express');
-const app        = express();
+const { fetchGif, fetchDadJoke, addFeature, getHelp } = require('./commands');
 
-const bot_token = 'xoxb-300355127216-hlFCMLD1IRTAVS3BiLGsnBgy';
+
+const bot_token = process.env.SLACK_API_KEY;
 const rtm       = new RtmClient(bot_token);
 const web       = new WebClient(bot_token);
 
 const robotName   = 'Old Ben';
-const allCommands = ['!help', '!echo', '!dadjoke'];
+const allCommands = ['!help', '!echo', '!dadjoke', '!gif', '!feature'];
 
 let users = [];
-
-function fetchDadJoke(args, message) {
-  let url,
-      messageToSend,
-      randomIndex,
-      headers = {
-        method: "GET",
-        accept: "application/json",
-        "User-Agent": "https://github.com/JGordy/slackbot"
-      };
-
-  if (args) {
-    url = `https://icanhazdadjoke.com/search?term=${args}`;
-  } else {
-    url = 'https://icanhazdadjoke.com/';
-  }
-
-  fetch(url, {headers: headers})
-    .then(results => {
-      return results.json()
-    })
-    .then(data => {
-      if (data.joke) {
-        messageToSend = '"' + data.joke + '"';
-      } else if (data.total_jokes !== 0) {
-        randomIndex = Math.floor(Math.random() * (data.results.length));
-        messageToSend = '"' + data.results[randomIndex].joke + '"';
-      } else {
-        let messages = [":wave: " + args + " is not the term you're looking for.",
-                        ":rebel_alliance: The jedi archives contain nothing on the term " +  '"' + args + '"',
-                        ":bluelightsaber: " + args +  " not found. You'll never win Darth.",
-                        ":wave: " + args + " is not the term you're looking for."];
-        let randomIndex = Math.floor(Math.random() * messages.length);
-
-        messageToSend = `${messages[randomIndex]}`
-      }
-      rtm.sendMessage(messageToSend, message.channel)
-    })
-    .catch(err => {
-      rtm.sendMessage("Error fetching dad jokes: " + err , message.channel)
-    });
-
-};
 
 function executeCommand(command, args, message) {
     switch (command) {
       case '!echo':
-        rtm.sendMessage(args , message.channel);
+        if (message.text === '!echo') {
+          rtm.sendMessage( "To use this feature, add a term behind the command. For example: !echo echo.", message.channel)
+        } else {
+          rtm.sendMessage(args , message.channel);
+        }
         break;
       case '!help':
-        rtm.sendMessage("Here are the supported commands--->    " + allCommands.join(",  ") , message.channel);
+        if (args) {
+          rtm.sendMessage(getHelp(command, args, message), message.channel);
+        } else {
+          rtm.sendMessage("Here are the supported commands--->    " + allCommands.join(",  ") , message.channel);
+        }
         break;
       case '!dadjoke':
-        fetchDadJoke(args, message);
+        fetchDadJoke(args, message)
+        .then(data => {
+          rtm.sendMessage(data, message.channel)
+        });
         break;
+      case '!gif':
+        fetchGif(command, args, message);
+        break;
+      case '!feature':
+        addFeature(command, args, message)
+        .then(data => {
+          console.log('addFeature data: ', data);
+          web.chat.postMessage(message.channel, 'Feature card added successfully', {
+            text: 'Feature card added',
+            attachments: [
+              {
+                fallback: 'Feature card added',
+                color: '#2cf',
+                author_name: data.creator.login,
+                author_link: data.creator.html_url,
+                author_icon: data.creator.avatar_url,
+                title: 'Feature details',
+                title_link: data.url,
+                text: data.note,
+                footer: "Slack API",
+                footer_icon: "https://platform.slack-edge.com/img/default_application_icon.png"
+              }
+            ]
+          })
+          .then(res => {
+            console.log("RESPONSE: ", res);
+          })
+          .catch(err => {
+            console.log("ERROR: ", err);
+          })
+        });
       default:
     }
 }
@@ -113,9 +113,4 @@ web.users.list((err, data) => {
     }
 });
 
-rtm.start();
-
-const port = process.env.PORT || 8001;
-app.listen(port, () => {
-    console.log('listening on port: %s', port);
-});
+module.exports = {rtm, web, RTM_EVENTS};
