@@ -6,7 +6,7 @@ const fetch      = require('node-fetch');
 const { fetchGif, fetchDadJoke, addFeature, getHelp } = require('./commands');
 
 
-const bot_token = process.env.SLACK_API_KEY;
+const bot_token = 'xoxb-300355127216-yWPBhi22f2hWJZZhComijNNV';
 const rtm       = new RtmClient(bot_token);
 const web       = new WebClient(bot_token);
 

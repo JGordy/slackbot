@@ -79,7 +79,7 @@ function addFeature(command, args, message) {
     method: "POST",
     headers: {
       Accept: 'application/vnd.github.inertia-preview+json',
-      Authorization: process.env.GITHUB_TOKEN,
+      Authorization: 'token 74455dfde87c61c80ea48e07f499f0e8fa772d7f',
       'User-Agent': "Jgordy_Old-Ben"
     },
     body: JSON.stringify({note: args})
