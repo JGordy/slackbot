@@ -6,6 +6,7 @@ const fetch      = require('node-fetch');
 const { fetchGif, fetchDadJoke, addFeature, getHelp } = require('./commands');
 
 
+// const bot_token = process.env.SLACK_API_KEY;
 const bot_token = 'xoxb-300355127216-yWPBhi22f2hWJZZhComijNNV';
 const rtm       = new RtmClient(bot_token);
 const web       = new WebClient(bot_token);
@@ -36,6 +37,12 @@ function executeCommand(command, args, message) {
         .then(data => {
           rtm.sendMessage(data, message.channel)
         });
+<<<<<<< HEAD
+        break;
+      case '!gif':
+        fetchGif(command, args, message);
+        break;
+=======
         break;
       case '!gif':
         fetchGif(command, args, message);
@@ -112,5 +119,14 @@ web.users.list((err, data) => {
         updateUsers(data);
     }
 });
+
+<<<<<<< HEAD
+=======
+// rtm.start();
+
+// const port = process.env.PORT || 8001;
+// app.listen(port, () => {
+//     console.log('listening on port: %s', port);
+// });
 
 module.exports = {rtm, web, RTM_EVENTS};
