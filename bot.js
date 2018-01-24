@@ -54,7 +54,7 @@ function executeCommand(command, args, message) {
                 author_link: data.creator.html_url,
                 author_icon: data.creator.avatar_url,
                 title: 'Feature details',
-                title_link: data.url,
+                title_link: data.column_url,
                 text: data.note,
                 footer: "Slack API",
                 footer_icon: "https://platform.slack-edge.com/img/default_application_icon.png"
