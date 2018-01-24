@@ -114,13 +114,4 @@ web.users.list((err, data) => {
     }
 });
 
-<<<<<<< HEAD
-=======
-// rtm.start();
-
-// const port = process.env.PORT || 8001;
-// app.listen(port, () => {
-//     console.log('listening on port: %s', port);
-// });
-
 module.exports = {rtm, web, RTM_EVENTS};
