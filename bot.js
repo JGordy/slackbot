@@ -37,12 +37,6 @@ function executeCommand(command, args, message) {
         .then(data => {
           rtm.sendMessage(data, message.channel)
         });
-<<<<<<< HEAD
-        break;
-      case '!gif':
-        fetchGif(command, args, message);
-        break;
-=======
         break;
       case '!gif':
         fetchGif(command, args, message);
