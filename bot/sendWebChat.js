@@ -1,6 +1,6 @@
 require('dotenv').config();
 const WebClient        = require('@slack/client').WebClient;
-const web              = new WebClient(process.env.SLACK_API_KEY);
+const web              = new WebClient('xoxb-300355127216-yWPBhi22f2hWJZZhComijNNV');
 
 function sendChatMessage(data, message) {
   web.chat.postMessage(message.channel, 'Feature card added successfully', {

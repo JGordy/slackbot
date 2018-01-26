@@ -22,7 +22,7 @@ function addFeature(index, description, message) {
     method: index.options.method,
     headers: {
       Accept: 'application/vnd.github.inertia-preview+json',
-      Authorization: process.env.GITHUB_TOKEN,
+      Authorization: 'token a24e164c67f4c635a5c3051600726d9450d30ace',
       'User-Agent': "Jgordy_Old-Ben"
     },
     body: JSON.stringify(body)
