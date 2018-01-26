@@ -36,7 +36,6 @@ function fetchDadJoke(args, message) {
 
         return `${messages[randomIndex]}`
       }
-      console.log("MESSAGETOSEND: ", messageToSend);
       return messageToSend;
     })
     .catch(err => {

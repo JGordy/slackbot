@@ -9,9 +9,9 @@ function getHelp(command, args, message) {
   } else if (args === '!gif') {
     return '!gif currently in the works. Try back later.';
   } else if (args === '!feature') {
-    return '!feature Adds a project to-do in Generosity_Market/front_end_POC repository. Will support other GM repos soon.';
+    return '!feature Adds an issue in the specified repository. \n\nRepo options available are: \n\n!frontend for front_end_POC, \n!backend for back_end_POC, \n!api for the official api, \n!webpage for Generosity-Market.github.io, \n!slackbot for myself, Old Ben. \n\nAfter specifying the repo, you can then specify title, tags, and the issues main text in the format below. \nNote the use of semicolons bewtween each section. \nThe main two supported options for tags is either "enhancement" or "bug". \n\n!feature !frontend title;tags;text';
   } else {
-    return args + ' command not regconized. Type !help to see all supported commands.';
+    return args + ' command not recognized. Type !help to see all supported commands.';
   }
 }
 

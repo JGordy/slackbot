@@ -1,10 +1,23 @@
 require('dotenv').config();
-const fetch = require('node-fetch');
+const fetch               = require('node-fetch');
 const { sendChatMessage } = require('../../sendWebChat');
 
 function addFeature(index, description, message) {
-  console.log("INDEX: ", index);
-  console.log("DESCRIP: ", description);
+  let body;
+  if (description.includes(';')) {
+    let info = description.split(';');
+    body = {
+      title: info[0],
+      body: info[2],
+      labels: [ info[1] ]
+    }
+  } else {
+    body = {
+      title: 'Feature Request',
+      body: description
+    }
+  }
+
   let options = {
     method: index.options.method,
     headers: {
@@ -12,7 +25,7 @@ function addFeature(index, description, message) {
       Authorization: process.env.GITHUB_TOKEN,
       'User-Agent': "Jgordy_Old-Ben"
     },
-    body: JSON.stringify({title: "Feature Request", body: description})
+    body: JSON.stringify(body)
   }
 
  return fetch(index.url, options)

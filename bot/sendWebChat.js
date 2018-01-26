@@ -3,8 +3,6 @@ const WebClient        = require('@slack/client').WebClient;
 const web              = new WebClient(process.env.SLACK_API_KEY);
 
 function sendChatMessage(data, message) {
-  console.log("SEND CHAT FIRED!!!!!----->>>>>");
-  console.log("DATA--->>>> ", data);
   web.chat.postMessage(message.channel, 'Feature card added successfully', {
       text: 'Feature card added',
       attachments: [
