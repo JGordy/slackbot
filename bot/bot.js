@@ -9,7 +9,7 @@ const { fetchDadJoke } = require('./commands/dadjoke');
 const { fetchGif }     = require('./commands/giphy');
 const { filterRepo }   = require('./commands/feature/repo_data');
 
-const bot_token = 'xoxb-300355127216-yWPBhi22f2hWJZZhComijNNV';
+const bot_token = process.env.SLACK_API_KEY;
 const rtm              = new RtmClient(bot_token);
 const web              = new WebClient(bot_token);
 

@@ -1,9 +1,21 @@
 require('dotenv').config();
 const WebClient        = require('@slack/client').WebClient;
-const web              = new WebClient('xoxb-300355127216-yWPBhi22f2hWJZZhComijNNV');
+const web              = new WebClient(process.env.SLACK_API_KEY);
+
+let successMessages = [
+  'That\'s a neat feature!, Don\'t forget to add it to your projects.',
+  'I am one with the force, the force is with me.',
+  'Issue added, go fill in the intel and add it to your project board.',
+  'Meh, I guess that\'ll do. Add it to your projects if you must.',
+  'That\'ll do donkey, that\'ll do.',
+  'That\'s a neat feature!, Don\'t forget to add it to your projects.'
+];
 
 function sendChatMessage(data, message) {
-  web.chat.postMessage(message.channel, 'Feature card added successfully', {
+
+  let randomQuote = Math.floor(Math.random() * successMessages.length);
+
+  web.chat.postMessage(message.channel, randomQuote, {
       text: 'Feature card added',
       attachments: [
         {
