@@ -1,18 +1,20 @@
 require('dotenv').config();
-const RtmClient  = require('@slack/client').RtmClient;
-const WebClient  = require('@slack/client').WebClient;
-const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
-const fetch      = require('node-fetch');
-const { fetchGif, fetchDadJoke, addFeature, getHelp } = require('./commands');
+const RtmClient        = require('@slack/client').RtmClient;
+const WebClient        = require('@slack/client').WebClient;
+const RTM_EVENTS       = require('@slack/client').RTM_EVENTS;
+const fetch            = require('node-fetch');
 
+const { getHelp }      = require('./commands/help');
+const { fetchDadJoke } = require('./commands/dadjoke');
+const { fetchGif }     = require('./commands/giphy');
+const { filterRepo }   = require('./commands/feature/repo_data');
 
-// const bot_token = process.env.SLACK_API_KEY;
-const bot_token = 'xoxb-300355127216-yWPBhi22f2hWJZZhComijNNV';
-const rtm       = new RtmClient(bot_token);
-const web       = new WebClient(bot_token);
+const bot_token = process.env.SLACK_API_KEY;
+const rtm              = new RtmClient(bot_token);
+const web              = new WebClient(bot_token);
 
-const robotName   = 'Old Ben';
-const allCommands = ['!help', '!echo', '!dadjoke', '!gif', '!feature'];
+const robotName        = 'Old Ben';
+const allCommands      = ['!help', '!echo', '!dadjoke', '!gif', '!feature'];
 
 let users = [];
 
@@ -42,33 +44,8 @@ function executeCommand(command, args, message) {
         fetchGif(command, args, message);
         break;
       case '!feature':
-        addFeature(command, args, message)
-        .then(data => {
-          console.log('addFeature data: ', data);
-          web.chat.postMessage(message.channel, 'Feature card added successfully', {
-            text: 'Feature card added',
-            attachments: [
-              {
-                fallback: 'Feature card added',
-                color: '#2cf',
-                author_name: data.creator.login,
-                author_link: data.creator.html_url,
-                author_icon: data.creator.avatar_url,
-                title: 'Feature details',
-                title_link: data.column_url,
-                text: data.note,
-                footer: "Slack API",
-                footer_icon: "https://platform.slack-edge.com/img/default_application_icon.png"
-              }
-            ]
-          })
-          .then(res => {
-            console.log("RESPONSE: ", res);
-          })
-          .catch(err => {
-            console.log("ERROR: ", err);
-          })
-        });
+        filterRepo(command, args, message)
+        break;
       default:
     }
 }
@@ -83,16 +60,18 @@ function getUsernameFromId(id) {
 }
 
 rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
-
+    // getting type and text of received message
     if (message.type === 'message' && message.text) {
         const userName = getUsernameFromId(message.user);
 
+        // if user that sent message doesnt match the slackbot name
         if (userName !== robotName) {
 
             if (message.text.indexOf(robotName) !== -1) {
                 rtm.sendMessage('Hey ' + userName + ', I heard that!', message.channel);
             }
 
+            // testing the presence of a command in the text which uses the ! symbol
             if (message.text.indexOf('!') !== -1) {
                 allCommands.forEach((command) => {
 
@@ -114,4 +93,4 @@ web.users.list((err, data) => {
     }
 });
 
-module.exports = {rtm, web, RTM_EVENTS};
+module.exports = {rtm, web, RTM_EVENTS };

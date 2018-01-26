@@ -13,9 +13,11 @@ A slackbot with the personality of everyones favorite old Jedi Master Obi-Wan Ke
 
 ## Tech Used
 - Node.js
+- Slack API RTM Client (Real Time Messager)
+- Slack API Web Client (For interactive chat)
 
 ## Dependencies
-- Slack client
+- @slack/client
 - dotenv
 - express
 - node-fetch

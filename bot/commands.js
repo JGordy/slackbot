@@ -97,4 +97,4 @@ function addFeature(command, args, message) {
           })
 }
 
-module.exports = { fetchGif, fetchDadJoke, addFeature, getHelp };
+// module.exports = { fetchGif, fetchDadJoke, addFeature, getHelp };
