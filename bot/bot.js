@@ -31,7 +31,11 @@ function executeCommand(command, args, message) {
         if (args) {
           rtm.sendMessage(getHelp(command, args, message), message.channel);
         } else {
-          rtm.sendMessage("Here are the supported commands--->    " + allCommands.join(",  ") , message.channel);
+          let newCommands = [];
+          allCommands.forEach(index => {
+            newCommands.push("`" + index + "`")
+          })
+          rtm.sendMessage("*Here are the supported commands--->*    " + newCommands.join(",  ") + "\n\nYou can see what each command does by typing the `!help` followed by the command you want to see details of. \n\n*For example:* `!help !dadjoke` will show you the details of the dadjoke command." , message.channel);
         }
         break;
       case '!dadjoke':
