@@ -38,6 +38,6 @@ function sendChatMessage(data, message) {
     .catch(err => {
       console.log("ERROR: ", err);
     });
-}
+};
 
-module.exports = { sendChatMessage }
+module.exports = { sendChatMessage };

@@ -75,7 +75,7 @@ function filterRepo(command, args, message) {
       if ((args.includes(index.repo)) && (index.repo !== '')) {
 
         let description = args.substring(index.repo.length);
-        addFeature(index, description, message)
+        addFeature(command, index, description, message)
       }
     });
 

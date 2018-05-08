@@ -2,14 +2,14 @@ require('dotenv').config();
 const fetch               = require('node-fetch');
 const { sendChatMessage } = require('../../sendWebChat');
 
-function addFeature(index, description, message) {
+function addFeature(command, index, description, message) {
   let body;
   if (description.includes(';')) {
     let info = description.split(';');
     body = {
       title: info[0],
-      body: info[2],
-      labels: [ info[1] ]
+      body: info[1],
+      labels: [ command ]
     }
   } else {
     body = {

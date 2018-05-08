@@ -14,7 +14,7 @@ const rtm              = new RtmClient(bot_token);
 const web              = new WebClient(bot_token);
 
 const robotName        = 'Old Ben';
-const allCommands      = ['!help', '!echo', '!dadjoke', '!gif', '!feature'];
+const allCommands      = ['!help', '!echo', '!dadjoke', '!gif', '!enhancement', '!bug'];
 
 let users = [];
 
@@ -47,8 +47,9 @@ function executeCommand(command, args, message) {
       case '!gif':
         fetchGif(command, args, message);
         break;
-      case '!feature':
-        filterRepo(command, args, message)
+      case '!enhancement':
+      case '!bug':
+        filterRepo(command, args, message);
         break;
       default:
     }
@@ -75,7 +76,7 @@ rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
                 rtm.sendMessage('Hey ' + userName + ', I heard that!', message.channel);
             }
 
-            // testing the presence of a command in the text which uses the ! symbol
+            // looking for a 'command', which uses the ! symbol
             if (message.text.indexOf('!') !== -1) {
                 allCommands.forEach((command) => {
 
@@ -97,4 +98,4 @@ web.users.list((err, data) => {
     }
 });
 
-module.exports = {rtm, web, RTM_EVENTS };
+module.exports = { rtm, web, RTM_EVENTS };
