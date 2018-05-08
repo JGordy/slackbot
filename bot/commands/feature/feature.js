@@ -9,7 +9,7 @@ function addFeature(command, index, description, message) {
     body = {
       title: info[0],
       body: info[1],
-      labels: [ command ]
+      labels: [ command.slice(1) ]  
     }
   } else {
     body = {
