@@ -9,7 +9,7 @@ function getHelp(command, args, message) {
   } else if (args === '!gif') {
     return '`!gif` currently in the works. Try back later.';
   } else if ((args === '!enhancement') || (args === '!bug')) {
-    return '`!enhancement` or `!bug` Adds an issue in the specified repository. \n\n*Repo options available are:* \n```!frontend for front_end_POC, \n!backend for back_end_POC, \n!api for the official api, \n!webpage for Generosity-Market.github.io, \n!slackbot for myself, Old Ben.``` \n\nAfter specifying the repo, you can then specify title, and the issues main text in the format below. \nNote the use of semicolons bewtween the title and text.  \n\n`!enhancement !frontend title;text` or `!bug !webpage title;text`';
+    return '`!enhancement` or `!bug` Adds an issue in the specified repository. \n\n*Repo options available are:* \n```!frontend for front_end_POC, \n!backend for back_end_POC, \n!api for the official api, \n!site for Generosity-Market.github.io, \n!slackbot for myself, Old Ben.``` \n\nAfter specifying the repo, you can then specify title, and the issues main text in the format below. \nNote the use of semicolons bewtween the title and text.  \n\n`!enhancement !frontend title;text` or `!bug !site title;text`';
   } else {
     return '`' + args + '`' + ' command not recognized. Type `!help` to see all supported commands.';
   }

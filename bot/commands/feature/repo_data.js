@@ -50,7 +50,7 @@ let repoData = [
     }
   },
   {
-    repo: '!webpage',
+    repo: '!site',
     url: 'https://api.github.com/repos/Generosity-Market/Generosity-Market.github.io/issues',
     options: {
       method: 'POST',
