@@ -15,7 +15,7 @@ function sendChatMessage(data, message) {
 
   let randomQuote = Math.floor(Math.random() * successMessages.length);
 
-  web.chat.postMessage(message.channel, randomQuote, {
+  web.chat.postMessage(message.channel, successMessages[randomQuote], {
       text: 'Feature card added',
       attachments: [
         {
