@@ -1,5 +1,4 @@
 function getHelp(command, args, message) {
-    let helpMessage;
     if (args === '!echo') {
         return '`!echo` Mimics any text after the !echo command';
     } else if (args === '!help') {

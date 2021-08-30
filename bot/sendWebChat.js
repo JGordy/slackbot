@@ -1,5 +1,5 @@
 require('dotenv').config();
-const WebClient = require('@slack/client').WebClient;
+const { WebClient } = require('@slack/web-api');
 const web = new WebClient(process.env.SLACK_API_KEY);
 
 let successMessages = [

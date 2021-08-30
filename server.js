@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { rtm, web, RTM_EVENTS } = require('./bot/bot');
+const { rtm } = require('./bot/bot');
 
 
 const port = process.env.PORT || 8001;
