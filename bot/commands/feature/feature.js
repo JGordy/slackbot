@@ -1,43 +1,43 @@
 require('dotenv').config();
-const fetch               = require('node-fetch');
+const fetch = require('node-fetch');
 const { sendChatMessage } = require('../../sendWebChat');
 
 function addFeature(command, index, description, message) {
-  let body;
-  if (description.includes(';')) {
-    let info = description.split(';');
-    body = {
-      title: info[0],
-      body: info[1],
-      labels: [ command.slice(1) ]  
+    let body;
+    if (description.includes(';')) {
+        let info = description.split(';');
+        body = {
+            title: info[0],
+            body: info[1],
+            labels: [command.slice(1)]
+        }
+    } else {
+        body = {
+            title: 'Feature Request',
+            body: description
+        }
     }
-  } else {
-    body = {
-      title: 'Feature Request',
-      body: description
+
+    let options = {
+        method: index.options.method,
+        headers: {
+            Accept: 'application/vnd.github.inertia-preview+json',
+            Authorization: process.env.GITHUB_TOKEN,
+            'User-Agent': "Jgordy_Old-Ben"
+        },
+        body: JSON.stringify(body)
     }
-  }
 
-  let options = {
-    method: index.options.method,
-    headers: {
-      Accept: 'application/vnd.github.inertia-preview+json',
-      Authorization: process.env.GITHUB_TOKEN,
-      'User-Agent': "Jgordy_Old-Ben"
-    },
-    body: JSON.stringify(body)
-  }
-
- return fetch(index.url, options)
-          .then(results => {
+    return fetch(index.url, options)
+        .then(results => {
             return results.json();
-          })
-          .then(data => {
+        })
+        .then(data => {
             sendChatMessage(data, message)
-          })
-          .catch(err => {
+        })
+        .catch(err => {
             return err;
-          })
+        })
 }
 
 module.exports = { addFeature };
