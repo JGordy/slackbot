@@ -19,6 +19,7 @@ const allCommands = ['!help', '!echo', '!dadjoke', '!gif', '!enhancement', '!bug
 let users = [];
 
 function executeCommand(command, args, message) {
+    console.log({ command, args, message });
     switch (command) {
         case '!echo':
             if (message.text === '!echo') {
